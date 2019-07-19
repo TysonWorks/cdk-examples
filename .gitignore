@@ -9,3 +9,4 @@ __pycache__
 node_modules
 .cdk.staging
 cdk.out
+notes.txt
