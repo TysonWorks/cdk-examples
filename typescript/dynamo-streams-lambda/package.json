@@ -1,5 +1,5 @@
 {
-  "name": "ec2-basics",
+  "name": "dynamo-streams-lambda",
   "version": "0.1.0",
   "scripts": {
     "build": "tsc",
@@ -13,7 +13,6 @@
     "aws-cdk": "^1.0.0"
   },
   "dependencies": {
-    "@aws-cdk/aws-ec2": "^1.0.0",
     "@aws-cdk/core": "^1.0.0",
     "source-map-support": "^0.5.9"
   }
