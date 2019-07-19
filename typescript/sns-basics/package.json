@@ -1,5 +1,5 @@
 {
-  "name": "dynamo-streams-lambda",
+  "name": "empty-template",
   "version": "0.1.0",
   "scripts": {
     "build": "tsc",
@@ -13,8 +13,6 @@
     "aws-cdk": "^1.0.0"
   },
   "dependencies": {
-    "@aws-cdk/aws-dynamodb": "^1.0.0",
-    "@aws-cdk/aws-lambda": "^1.0.0",
     "@aws-cdk/core": "^1.0.0",
     "source-map-support": "^0.5.9"
   }
