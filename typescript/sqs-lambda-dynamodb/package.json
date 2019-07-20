@@ -13,6 +13,8 @@
     "aws-cdk": "^1.0.0"
   },
   "dependencies": {
+    "@aws-cdk/aws-dynamodb": "^1.1.0",
+    "@aws-cdk/aws-lambda": "^1.1.0",
     "@aws-cdk/aws-sqs": "^1.1.0",
     "@aws-cdk/core": "^1.0.0",
     "source-map-support": "^0.5.9"
