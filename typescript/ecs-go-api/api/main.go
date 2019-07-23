@@ -34,7 +34,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/dogs/{name}", handleGetDog).Methods("GET")
 	r.HandleFunc("/dogs", handleGetDogs).Methods("GET")
-	srv := &http.Server{
+	server := &http.Server{
 		Handler:      r,
 		Addr:         ":8080",
 		ReadTimeout:  5 * time.Second,
@@ -43,12 +43,12 @@ func main() {
 
 	go func() {
 		log.Println("Starting server")
-		if err := srv.ListenAndServe(); err != nil {
+		if err := server.ListenAndServe(); err != nil {
 			log.Fatal(err)
 		}
 	}()
 
-	waitForShutdown(srv)
+	waitForShutdown(server)
 }
 
 func handleGetDog(w http.ResponseWriter, r *http.Request) {
@@ -89,7 +89,7 @@ func handleGetDogs(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func waitForShutdown(srv *http.Server) {
+func waitForShutdown(server *http.Server) {
 	interruptChan := make(chan os.Signal, 1)
 	signal.Notify(interruptChan, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	
@@ -97,7 +97,7 @@ func waitForShutdown(srv *http.Server) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
-	srv.Shutdown(ctx)
+	server.Shutdown(ctx)
 
 	log.Println("Shutting down")
 	os.Exit(0)

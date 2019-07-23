@@ -9,6 +9,5 @@ export class CognitoUserPoolStack extends cdk.Stack {
             userPoolName: "MyUserPool",
             signInType: cognito.SignInType.EMAIL
         })
-
     }
 }
