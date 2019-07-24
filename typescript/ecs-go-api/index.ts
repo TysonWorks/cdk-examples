@@ -21,7 +21,7 @@ export default class EcsGoAPIStack extends cdk.Stack {
         const cluster = new ecs.Cluster(this, 'Cluster', { vpc });
         const fargateService = new ecs_patterns.LoadBalancedFargateService(this, "FargateService", {
             cluster,
-            image: new ecs.EcrImage(ecrRepo, "latest"),
+            image: new ecs.ContainerImage.fromAsset("api"),
             containerPort: 8080
         });
         new cdk.CfnOutput(this, 'LoadBalancerDNS', { value: fargateService.loadBalancer.loadBalancerDnsName });
