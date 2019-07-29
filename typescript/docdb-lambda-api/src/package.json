@@ -1,0 +1,19 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "",
+  "main": "getLongURL.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^3.3.0-beta2",
+    "shortid": "^2.2.14"
+  },
+  "devDependencies": {
+    "@types/shortid": "0.0.29"
+  }
+}
