@@ -3,7 +3,6 @@ import lambda = require("@aws-cdk/aws-lambda");
 import apigateway = require("@aws-cdk/aws-apigateway");
 import docdb = require("@aws-cdk/aws-docdb");
 import ec2 = require("@aws-cdk/aws-ec2");
-import { addCorsOptions } from "../lambda-python-api/lib";
 
 export class DocdbLambdaAPIStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
