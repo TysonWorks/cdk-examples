@@ -1,4 +1,4 @@
-## EKS Cluster
+## EKS Cluster Example
 This example will deploy an EKS cluster, worker nodes, ECR repositories and two services written in Python and NodeJs. Services include Kubernetes resources such as Service, Deployment and Horizontal Pod Scaler templates.
 
 `go-api` folder consist of sample REST API written in Go
@@ -19,6 +19,10 @@ This will show Service resources and external domain information.
 For trying out grapql-api service go to: `{DOMAIN_URL}/graphql`
 
 For trying out go-api service go to : `{DOMAIN_URL}/dogs`
+
+You will need to deploy Metrics Server to get HPA working correctly.
+
+https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/metrics-server
 
 Destroy resources after you are done with the example
 
