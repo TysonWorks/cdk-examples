@@ -1,7 +1,7 @@
 ## Lambda API Gateway
 This example will deploy a Lambda function written in Python and API Gateway with one resource. Lambda function will return one random poem from external API (http://poetrydb.org) as a JSON response.
 
-<img src="../../assets/lambda-api-python.png" width="1000">
+<img src="../assets/lambda-api-python.png" width="1000">
 
 
 After the successful deployment you will get an url similiar to this.

@@ -1,7 +1,7 @@
 ## SQS Lambda and DynamoDB Stack
 This example will deploy a SQS queue, DynamoDB table and a Lambda function written in Javacript. Lambda function will get triggered by incoming SQS messages. It will process the incoming message and processed data will be added to DynamoDB table.
 
-<img src="../../assets/sqs-lambda-dynamo.png" width="1000">
+<img src="../assets/sqs-lambda-dynamo.png" width="1000">
 
 You will see a SQS URL after the successful deployment. Use `aws-cli` to send basic message for testing the CDK Stack.
 
