@@ -80,19 +80,20 @@ export class BatchStack extends cdk.Stack {
         const computeEnvironemnt = new batch.CfnComputeEnvironment(this, "compute-environment", {
             computeEnvironmentName,
             computeResources: {
-                minvCpus: 2,
-                desiredvCpus: 2,
+                minvCpus: 0,
+                desiredvCpus: 0,
+                maxvCpus: 4,
                 instanceTypes: [
                     "optimal"
                 ],
-                maxvCpus: 4,
                 instanceRole: instanceProfile.attrArn,
                 type: "EC2",
                 subnets: vpc.publicSubnets.map(x=>x.subnetId),
                 securityGroupIds: [sg.securityGroupId]
             },
             serviceRole: batchServiceRole.roleArn,
-            type: "MANAGED"
+            type: "MANAGED",
+            state: "ENABLED"
         });
         computeEnvironemnt.addDependsOn(instanceProfile);
 
@@ -120,7 +121,7 @@ export class BatchStack extends cdk.Stack {
             initialPolicy: [jobSubmitStatement]
         });
         const rule = new events.Rule(this, 'event-rule', {
-            schedule: events.Schedule.expression('rate(5 minutes)')
+            schedule: events.Schedule.expression('rate(4 hours)')
         });
         rule.addTarget(new targets.LambdaFunction(lambdaFunction));
     }
