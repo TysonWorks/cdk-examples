@@ -3,9 +3,9 @@ Install CDK CLI globally
 
 ```npm install -g aws-cdk```
 
-### For Typescript Examples
+### How to Deploy Examples
 
-``` cd typescript/ec2-basics ```
+``` cd ec2-basics ```
 
 Install dependencies
 
