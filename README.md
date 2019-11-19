@@ -17,7 +17,7 @@ Set environment variebles
 
 ```export AWS_REGION="us-west-2"```
 
-Deploy using CDK CLI
+Deploy using CDK CLI (myprofile is previosuly setup AWS profile)
 
 ``` cdk deploy  --profile myprofile```
 
