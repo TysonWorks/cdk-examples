@@ -12,9 +12,9 @@ export class EC2JenkinsStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props: EC2JenkinsStackProps) {
         super(scope, id, props);
 
-        const vpc = ec2.Vpc.fromLookup(this, 'VPC', {
-            isDefault: true
-        });
+        // Create new VPC
+        const vpc = new ec2.Vpc(this, 'VPC');
+
         const mySecurityGroup = new ec2.SecurityGroup(this, 'jenkins-sg', {
             vpc,
             securityGroupName: "jenkins-sg",
@@ -23,38 +23,36 @@ export class EC2JenkinsStack extends cdk.Stack {
         mySecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22), 'allow public ssh access')
         mySecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(80), "Jenkins port");
 
-        const volume = new ec2.CfnVolume(this, "Volume", {
-            availabilityZone: vpc.publicSubnets[0].availabilityZone,
-            size: 100
-        })
-
-        const ec2Instance = new ec2.CfnInstance(this, "jenkins-instance", {
-            imageId: props.ami,
-            instanceType: "t3.micro",
-            tags: [
-                {key: "Name", value: "jenkins-instance"}
-            ],
-            networkInterfaces: [
-                {
-                    deviceIndex: "0",
-                    subnetId: vpc.publicSubnets[0].subnetId,
-                    groupSet: [mySecurityGroup.securityGroupId],
-                    associatePublicIpAddress: true
-                }
-            ],
-            volumes: [{device: "/dev/xvdb", volumeId: volume.ref}]
-        });
-        
+        const region = props.env.region as string;
+        const ec2Instance = new ec2.Instance(this, 'Instance', {
+            vpc,
+            instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.NANO),
+            machineImage: ec2.MachineImage.genericLinux({
+                [region]: props.ami
+          }),
+            securityGroup: mySecurityGroup,
+            vpcSubnets: {
+              subnetType: ec2.SubnetType.PUBLIC
+            },
+            blockDevices: [{
+              deviceName: "/dev/xvdb",
+              volume: ec2.BlockDeviceVolume.ebs(100, {
+                deleteOnTermination: true,
+                encrypted: true
+              }),
+              mappingEnabled: true
+            }]
+          });
 
         new cdk.CfnOutput(this, "EC2 URL", {
-            value: ec2Instance.attrPublicDnsName
+            value: ec2Instance.instancePublicDnsName
         });
         
     }
 }
 
 (async()=>{
-    const jenkinsAMI = await getLatestJenkinsAMI();
+    const jenkinsAMI = await getLatestJenkinsAMI(process.env.AWS_REGION as string);
     const app = new cdk.App();
     new EC2JenkinsStack(app, "EC2JenkinsStack", {
         env: {
