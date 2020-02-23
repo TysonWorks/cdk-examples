@@ -6,7 +6,7 @@ Install the CDK CLI globally
 `npm install -g aws-cdk`
 
 Change directory to any example  
-`cd ec2-basics`
+`cd sagemaker`
 
 Install dependencies  
 `npm install`
