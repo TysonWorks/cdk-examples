@@ -1,11 +1,13 @@
-const fs = require("fs");
-import cdk = require("@aws-cdk/core");
-import ec2 = require("@aws-cdk/aws-ec2");
-import batch = require("@aws-cdk/aws-batch");
-import iam = require("@aws-cdk/aws-iam");
-import lambda = require("@aws-cdk/aws-lambda");
-import events = require("@aws-cdk/aws-events");
-import targets = require("@aws-cdk/aws-events-targets");
+import * as cdk from "@aws-cdk/core";
+import * as ec2 from "@aws-cdk/aws-ec2";
+import * as batch from "@aws-cdk/aws-batch";
+import * as iam from "@aws-cdk/aws-iam";
+import * as lambda from "@aws-cdk/aws-lambda";
+import * as events from "@aws-cdk/aws-events";
+import * as targets from "@aws-cdk/aws-events-targets";
+import { readFileSync } from "fs";
+import { config } from "dotenv";
+config();
 
 const functionName = "batch-lambda";
 const jobDefinitionName = "job-definition";
@@ -13,7 +15,7 @@ const computeEnvironmentName = "compute-environment";
 const jobQueueName = "job-queue";
 const srcPath = `${__dirname}/lambdaHandler.js`;
 
-export class BatchStack extends cdk.Stack {
+class BatchStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
@@ -109,7 +111,7 @@ export class BatchStack extends cdk.Stack {
         
         const lambdaFunction = new lambda.Function(this, "lambda-function", {
             functionName,
-            code: new lambda.InlineCode(fs.readFileSync(srcPath, {encoding: "utf-8"})),
+            code: new lambda.InlineCode(readFileSync(srcPath, {encoding: "utf-8"})),
             handler: "index.handler",
             timeout: cdk.Duration.seconds(30),
             runtime: lambda.Runtime.NODEJS_8_10,
@@ -130,7 +132,7 @@ export class BatchStack extends cdk.Stack {
 const app = new cdk.App();
 new BatchStack(app, "BatchStack", {
     env: {
-        account: process.env.ACCOUNT_ID,
+        account: process.env.AWS_ACCOUNT_ID,
         region: process.env.AWS_REGION,
     }
 });

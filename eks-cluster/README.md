@@ -20,10 +20,8 @@ For trying out grapql-api service go to: `{DOMAIN_URL}/graphql`
 
 For trying out go-api service go to : `{DOMAIN_URL}/dogs`
 
-You will need to deploy Metrics Server to get HPA working correctly.
-
+You will need to deploy Metrics Server to get HPA working correctly.  
 https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/metrics-server
 
-Destroy resources after you are done with the example
-
+Destroy resources after you are done with the example  
 `cdk destroy --profile your_profile`

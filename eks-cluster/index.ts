@@ -1,12 +1,13 @@
-import cdk = require("@aws-cdk/core");
-import eks = require("@aws-cdk/aws-eks");
-import ec2 = require("@aws-cdk/aws-ec2");
-import iam = require("@aws-cdk/aws-iam");
-import ecrAssets = require("@aws-cdk/aws-ecr-assets");
-
+import * as cdk from "@aws-cdk/core";
+import * as eks from "@aws-cdk/aws-eks";
+import * as ec2 from "@aws-cdk/aws-ec2";
+import * as iam from "@aws-cdk/aws-iam";
+import * as ecrAssets from "@aws-cdk/aws-ecr-assets";
 import { getKubernetesTemplates } from "./templates";
+import { config } from "dotenv";
+config();
 
-export class EKSClusterStack extends cdk.Stack {
+class EKSClusterStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
@@ -70,6 +71,6 @@ const app = new cdk.App();
 const stack = new EKSClusterStack(app, "EKSClusterStack", {
     env: {
         region: process.env.AWS_REGION,
-        account: process.env.ACCOUNT_ID
+        account: process.env.AWS_ACCOUNT_ID
     }
 });

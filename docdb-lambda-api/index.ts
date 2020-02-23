@@ -1,10 +1,12 @@
-import cdk = require("@aws-cdk/core");
-import lambda = require("@aws-cdk/aws-lambda");
-import apigateway = require("@aws-cdk/aws-apigateway");
-import docdb = require("@aws-cdk/aws-docdb");
-import ec2 = require("@aws-cdk/aws-ec2");
+import * as cdk from "@aws-cdk/core";
+import * as lambda from "@aws-cdk/aws-lambda";
+import * as apigateway from "@aws-cdk/aws-apigateway";
+import * as docdb from "@aws-cdk/aws-docdb";
+import * as ec2 from "@aws-cdk/aws-ec2";
+import { config } from "dotenv";
+config();
 
-export class DocdbLambdaAPIStack extends cdk.Stack {
+class DocdbLambdaAPIStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
@@ -48,7 +50,7 @@ export class DocdbLambdaAPIStack extends cdk.Stack {
             availabilityZones: vpc.availabilityZones.splice(3),
             dbClusterIdentifier: "docdb",
             masterUsername: "dbuser",
-            masterUserPassword: process.env.MASTER_USER_PASSWORD,
+            masterUserPassword: process.env.MASTER_USER_PASSWORD as string,
             vpcSecurityGroupIds: [sg.securityGroupName],
             dbSubnetGroupName: subnetGroup.dbSubnetGroupName,
             port
@@ -118,6 +120,6 @@ const app = new cdk.App();
 new DocdbLambdaAPIStack(app, "DocdbLambdaAPIStack", {
     env: {
         region: process.env.AWS_REGION,
-        account: process.env.ACCOUNT_ID
+        account: process.env.AWS_ACCOUNT_ID
     }
 });

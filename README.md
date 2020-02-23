@@ -1,36 +1,32 @@
 # Examples using AWS CDK (Cloud Development Kit)
-Install CDK CLI globally
-
-```npm install -g aws-cdk```
 
 ### How to Deploy Examples
 
-``` cd ec2-basics ```
+Install the CDK CLI globally  
+`npm install -g aws-cdk`
 
-Install dependencies
+Change directory to any example  
+`cd ec2-basics`
 
-``` npm install ```
+Install dependencies  
+`npm install`
 
-Set environment variebles
+Set environment variables  
+`vim .env`
 
-```export ACCOUNT_ID="aws_account_id"```
-
-```export AWS_REGION="us-west-2"```
-
-Deploy using CDK CLI (myprofile is previosuly setup AWS profile)
-
-``` cdk deploy  --profile myprofile```
+Deploy using the CDK CLI  
+`cdk deploy`
 
 ### Other CLI Commands
 
-- ```cdk diff``` Prints out the difference in stacks
+- `cdk diff` Prints out the difference in stacks
 
-- ```cdk destroy``` Removes the stack
+- `cdk destroy` Removes the stack
 
-- ```cdk list``` List the applications in given folder
+- `cdk list` List the applications in given folder
 
-- ```cdk synth```  Synthesizes and prints the CloudFormation for the stack
+- `cdk synth`  Synthesizes and prints the CloudFormation template for the stack
 
-- ```cdk init``` Generates sample cdk project
+- `cdk init` Generates a new cdk project
 
-- ```cdk doctor``` Checks the app setup
+- `cdk doctor` Checks the CDK setup

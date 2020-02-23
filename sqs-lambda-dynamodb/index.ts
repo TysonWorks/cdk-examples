@@ -1,12 +1,13 @@
-import cdk = require("@aws-cdk/core");
-import sqs = require('@aws-cdk/aws-sqs');
-import lambda = require("@aws-cdk/aws-lambda");
+import * as cdk from "@aws-cdk/core";
+import * as sqs from '@aws-cdk/aws-sqs';
+import * as lambda from "@aws-cdk/aws-lambda";
+import * as dynamodb from "@aws-cdk/aws-dynamodb";
 import { SqsEventSource } from '@aws-cdk/aws-lambda-event-sources';
-import dynamodb = require("@aws-cdk/aws-dynamodb");
+import { readFileSync } from "fs";
+import { config } from "dotenv";
+config();
 
-import fs = require("fs");
-
-export class SQSLambdaDynamodbStack extends cdk.Stack {
+class SQSLambdaDynamodbStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
@@ -23,13 +24,13 @@ export class SQSLambdaDynamodbStack extends cdk.Stack {
         const srcPath = `${__dirname}/lambdaHandler.js`;
         const lambdaFunction = new lambda.Function(this, "ProcessOrder", {
             functionName: "ProcessOrder", 
-            code: new lambda.InlineCode(fs.readFileSync(srcPath, {encoding: "utf-8"})),
+            code: new lambda.InlineCode(readFileSync(srcPath, {encoding: "utf-8"})),
             handler: "index.handler",
             timeout: cdk.Duration.seconds(30),
             runtime: lambda.Runtime.NODEJS_8_10,
             environment: {
                 TABLE_NAME: table.tableName,
-                REGION: process.env.AWS_REGION
+                REGION: process.env.AWS_REGION as string
             },
             events: [
                 new SqsEventSource(queue)
@@ -43,10 +44,9 @@ export class SQSLambdaDynamodbStack extends cdk.Stack {
 }
 
 const app = new cdk.App();
-
 new SQSLambdaDynamodbStack(app, "SQSLambdaDynamodbStack", {
     env: {
-        account: process.env.ACCOUNT_ID,
+        account: process.env.AWS_ACCOUNT_ID,
         region: process.env.AWS_REGION
     }
 })

@@ -1,2 +1,2 @@
 ## DynamoDB Streams with Lambda
-This example will deploy a Lambda function written in Python and DynamoDB table. Lambda function will get invoked by the changes to DynamoDB table using DynamoDB streams.
+This example will deploy a Lambda function written in Python and a DynamoDB table. Lambda function will get invoked by the changes to DynamoDB table using DynamoDB streams.

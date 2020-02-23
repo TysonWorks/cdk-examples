@@ -1,11 +1,13 @@
-import cdk = require('@aws-cdk/core');
-import ec2 = require('@aws-cdk/aws-ec2');
+import * as cdk from '@aws-cdk/core';
+import * as ec2 from '@aws-cdk/aws-ec2';
+import { config } from "dotenv";
+config();
 
-export class EC2BasicsStack extends cdk.Stack {
+class EC2BasicsStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // Create new VPC
+    // Create a new VPC
     const vpc = new ec2.Vpc(this, 'VPC');
 
     // Open port 22 for SSH connection from anywhere
@@ -20,7 +22,7 @@ export class EC2BasicsStack extends cdk.Stack {
     // We are using the latest AMAZON LINUX AMI
     const awsAMI = new ec2.AmazonLinuxImage({generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2});
 
-    // We define instance details here
+    // We define the instance details here
     const ec2Instance = new ec2.Instance(this, 'Instance', {
       vpc,
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.NANO),
@@ -34,6 +36,6 @@ const app = new cdk.App();
 new EC2BasicsStack(app, "EC2BasicsStack", {
     env: {
         region: process.env.AWS_REGION,
-        account: process.env.ACCOUNT_ID
+        account: process.env.AWS_ACCOUNT_ID
     }
 });

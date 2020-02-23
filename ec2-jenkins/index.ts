@@ -1,18 +1,19 @@
-import cdk = require("@aws-cdk/core");
-import ec2 = require("@aws-cdk/aws-ec2");
-
+import * as cdk from "@aws-cdk/core";
+import * as ec2 from "@aws-cdk/aws-ec2";
 import { getLatestJenkinsAMI } from "./lib";
+import { config } from "dotenv";
+config();
 
-export interface EC2JenkinsStackProps {
+interface EC2JenkinsStackProps {
     env: any;
     ami: string;
 }
 
-export class EC2JenkinsStack extends cdk.Stack {
+class EC2JenkinsStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props: EC2JenkinsStackProps) {
         super(scope, id, props);
 
-        // Create new VPC
+        // Create a new VPC
         const vpc = new ec2.Vpc(this, 'VPC');
 
         const mySecurityGroup = new ec2.SecurityGroup(this, 'jenkins-sg', {
@@ -56,7 +57,7 @@ export class EC2JenkinsStack extends cdk.Stack {
     const app = new cdk.App();
     new EC2JenkinsStack(app, "EC2JenkinsStack", {
         env: {
-            account: process.env.ACCOUNT_ID,
+            account: process.env.AWS_ACCOUNT_ID,
             region: process.env.AWS_REGION,
         },
         ami: jenkinsAMI
