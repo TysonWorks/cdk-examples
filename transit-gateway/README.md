@@ -1,0 +1,4 @@
+## Transit Gateway
+This example will demonstrate the Transit Gateway offering from AWS. This stack will create three different VPCs, three different instances in those VPCs and a Transit Gateway with necessary resources to connect these networks. 
+
+Two of the instances will include the user-data script, which includes Nginx installation and starting the Nginx service. We will connect to the second instance via EC2 Instance Connect on the EC2 console, then we will try to reach private DNS addresses of the other two instances(instance1 and instance3) via curl command, which should work as expected.

@@ -1,5 +1,6 @@
 import * as cdk from "@aws-cdk/core";
 import { config } from "dotenv";
+config();
 
 class EmptyStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
