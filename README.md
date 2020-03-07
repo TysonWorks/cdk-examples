@@ -16,6 +16,7 @@ Set environment variables
 
 Deploy using the CDK CLI   
 `cdk deploy`  
+
 or deploy to non-default AWS profile  
 `cdk deploy --profile my_profile`  
 
