@@ -14,8 +14,10 @@ Install dependencies
 Set environment variables  
 `vim .env`
 
-Deploy using the CDK CLI  
-`cdk deploy`
+Deploy using the CDK CLI   
+`cdk deploy`  
+or deploy to non-default AWS profile  
+`cdk deploy --profile my_profile`  
 
 ### Other CLI Commands
 
