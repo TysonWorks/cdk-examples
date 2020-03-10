@@ -10,7 +10,7 @@ After the successful deployment you will see two commands. Use first one to setu
 This command will set the Kubernetes config needed for you to use `kubectl` to control your cluster
 
 After the initial deployment, pods in all namespaces would stuck in "Pending" state. We need to manually restart all deployments to schedule them on Fargate nodes.  
-`kubectl rollout restart deployments -n kube-system`
+`kubectl rollout restart deployments -n kube-system`  
 `kubectl rollout restart deployments`
 
 After that, try getting the running pods in default namespace  
