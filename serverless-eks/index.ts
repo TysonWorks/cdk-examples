@@ -27,6 +27,7 @@ class ServerlessEKSStack extends cdk.Stack {
         })
 
         const cluster = new eks.FargateCluster(this, "fargate-cluster", {
+            version: eks.KubernetesVersion.V1_19,
             clusterName: "sls-eks",
             vpc,
             mastersRole,
@@ -57,7 +58,7 @@ class ServerlessEKSStack extends cdk.Stack {
             8080, //container port,
             2 //replica number
         );
-        cluster.addResource("api-resource", ...apiTemplates);
+        cluster.addManifest("api-resource", ...apiTemplates);
 
         const graphqlTemplates = getKubernetesTemplates(
             graphqlAPIRepo, //repo
@@ -65,7 +66,7 @@ class ServerlessEKSStack extends cdk.Stack {
             8090, //container port,
             2 //replica number
         );
-        cluster.addResource("graphql-resource", ...graphqlTemplates);
+        cluster.addManifest("graphql-resource", ...graphqlTemplates);
     }
 }
 
