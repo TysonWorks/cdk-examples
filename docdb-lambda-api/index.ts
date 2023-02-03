@@ -1,13 +1,14 @@
-import * as cdk from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as apigateway from "@aws-cdk/aws-apigateway";
-import * as docdb from "@aws-cdk/aws-docdb";
-import * as ec2 from "@aws-cdk/aws-ec2";
+import * as cdk from "aws-cdk-lib";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import * as docdb from "aws-cdk-lib/aws-docdb";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { Construct } from "constructs";
 import { config } from "dotenv";
 config();
 
 class DocdbLambdaAPIStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
         const vpcCidr = "10.0.0.0/21";
@@ -17,12 +18,12 @@ class DocdbLambdaAPIStack extends cdk.Stack {
             cidr: vpcCidr,
             subnetConfiguration: [
                 {
-                    subnetType: ec2.SubnetType.PRIVATE,
+                    subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
                     cidrMask: 24,
                     name: "PrivateSubnet1"
                 },
                 {
-                    subnetType: ec2.SubnetType.PRIVATE,
+                    subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
                     cidrMask: 24,
                     name: "PrivateSubnet2"
                 },
@@ -51,7 +52,7 @@ class DocdbLambdaAPIStack extends cdk.Stack {
             dbClusterIdentifier: "docdb",
             masterUsername: "dbuser",
             masterUserPassword: process.env.MASTER_USER_PASSWORD as string,
-            vpcSecurityGroupIds: [sg.securityGroupName],
+            vpcSecurityGroupIds: [sg.securityGroupId],
             dbSubnetGroupName: subnetGroup.dbSubnetGroupName,
             port
         });
@@ -77,7 +78,7 @@ class DocdbLambdaAPIStack extends cdk.Stack {
             code: new lambda.AssetCode("src"),
             handler: "urlShortener.handler",
             timeout: cdk.Duration.seconds(60),
-            securityGroup: sg,
+            securityGroups: [sg],
             environment: {
                 DB_URL,
                 DB_NAME
@@ -91,7 +92,7 @@ class DocdbLambdaAPIStack extends cdk.Stack {
             code: new lambda.AssetCode("src"),
             handler: "getLongURL.handler",
             timeout: cdk.Duration.seconds(60),
-            securityGroup: sg,
+            securityGroups: [sg],
             environment: {
                 DB_URL,
                 DB_NAME

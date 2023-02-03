@@ -1,14 +1,15 @@
-import * as cdk from "@aws-cdk/core";
-import * as eks from "@aws-cdk/aws-eks";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as iam from "@aws-cdk/aws-iam";
-import * as ecrAssets from "@aws-cdk/aws-ecr-assets";
+import * as cdk from "aws-cdk-lib";
+import * as eks from "aws-cdk-lib/aws-eks";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as ecrAssets from "aws-cdk-lib/aws-ecr-assets";
 import { getKubernetesTemplates } from "./templates";
+import { Construct } from "constructs";
 import { config } from "dotenv";
 config();
 
 class ServerlessEKSStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
         const vpc = new ec2.Vpc(this, "vpc", {
@@ -43,12 +44,10 @@ class ServerlessEKSStack extends cdk.Stack {
         });
 
         const goAPIRepo = new ecrAssets.DockerImageAsset(this, "go-api-docker", {
-            repositoryName: "go-api",
             directory: "go-api"
         });
 
         const graphqlAPIRepo = new ecrAssets.DockerImageAsset(this, "graphql-docker", {
-            repositoryName: "graphql-api",
             directory: "graphql-api"
         });
 

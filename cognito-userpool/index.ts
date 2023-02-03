@@ -1,10 +1,11 @@
-import * as cdk from "@aws-cdk/core";
-import * as cognito from "@aws-cdk/aws-cognito";
+import * as cdk from "aws-cdk-lib";
+import * as cognito from "aws-cdk-lib/aws-cognito";
+import { Construct } from 'constructs';
 import { config } from "dotenv";
 config();
 
 class CognitoUserPoolStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
         const userPool = new cognito.CfnUserPool(this, "user-pool", {
@@ -29,7 +30,8 @@ class CognitoUserPoolStack extends cdk.Stack {
             generateSecret: false
         });
         userPoolClient.addDependsOn(userPool);
-    }   
+        new cdk.CfnOutput(this, "userpool-name", {value: userPool.userPoolName as string});
+    }
 }
 
 const app = new cdk.App();

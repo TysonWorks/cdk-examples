@@ -1,12 +1,13 @@
-import * as cdk from "@aws-cdk/core";
-import * as sagemaker from "@aws-cdk/aws-sagemaker";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as iam from "@aws-cdk/aws-iam";
+import * as cdk from "aws-cdk-lib";
+import * as sagemaker from "aws-cdk-lib/aws-sagemaker";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as iam from "aws-cdk-lib/aws-iam";
+import { Construct } from "constructs";
 import { config } from "dotenv";
 config();
 
 class SagemakerStack extends cdk.Stack {
-    constructor(construct: cdk.Construct, id: string, props?: cdk.StackProps) {
+    constructor(construct: Construct, id: string, props?: cdk.StackProps) {
         super(construct, id, props);
 
         const vpc = new ec2.Vpc(this, "vpc", {

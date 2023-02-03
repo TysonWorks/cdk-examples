@@ -1,14 +1,15 @@
-import * as cdk from "@aws-cdk/core";
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as dynamodb from "@aws-cdk/aws-dynamodb";
-import { SqsEventSource } from '@aws-cdk/aws-lambda-event-sources';
+import * as cdk from "aws-cdk-lib";
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { readFileSync } from "fs";
+import { Construct } from "constructs";
 import { config } from "dotenv";
 config();
 
 class SQSLambdaDynamodbStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
         const queue = new sqs.Queue(this, "Orders", {

@@ -1,13 +1,14 @@
-import * as cdk from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as apigateway from "@aws-cdk/aws-apigateway";
+import * as cdk from 'aws-cdk-lib';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { readFileSync } from "fs";
 import { addCorsOptions } from "./lib";
+import { Construct } from "constructs";
 import { config } from "dotenv";
 config();
 
 class LambdaPythonAPIStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
         const srcPath = `${__dirname}/lambda-handler.py`;

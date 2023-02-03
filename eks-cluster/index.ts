@@ -1,14 +1,15 @@
-import * as cdk from "@aws-cdk/core";
-import * as eks from "@aws-cdk/aws-eks";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as iam from "@aws-cdk/aws-iam";
-import * as ecrAssets from "@aws-cdk/aws-ecr-assets";
+import * as cdk from "aws-cdk-lib/core";
+import * as eks from "aws-cdk-lib/aws-eks";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as ecrAssets from "aws-cdk-lib/aws-ecr-assets";
 import { getKubernetesTemplates } from "./templates";
+import { Construct } from "constructs";
 import { config } from "dotenv";
 config();
 
 class EKSClusterStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
         const vpc = new ec2.Vpc(this, "vpc", {
@@ -20,7 +21,7 @@ class EKSClusterStack extends cdk.Stack {
         });
 
         const cluster = new eks.Cluster(this, "cluster", {
-            kubectlEnabled: true,
+            version: eks.KubernetesVersion.V1_23,
             defaultCapacityInstance: new ec2.InstanceType("m5.large"),
             defaultCapacity: 2,
             clusterName: "ekscluster",
@@ -29,16 +30,14 @@ class EKSClusterStack extends cdk.Stack {
         });
 
         const goAPIRepo = new ecrAssets.DockerImageAsset(this, "go-api-repo", {
-            repositoryName: "go-api",
-            directory: "go-api"
+            directory: "go-api",
         });
 
         const graphqlAPIRepo = new ecrAssets.DockerImageAsset(this, "graphql-api-repo", {
-            repositoryName: "graphql-api",
             directory: "graphql-api"
         });
 
-        const goAPIResource = new eks.KubernetesResource(this, "go-api-resource", {
+        const goAPIResource = new eks.KubernetesManifest(this, "go-api-resource", {
             cluster,
             manifest: getKubernetesTemplates(
                 goAPIRepo, //repo
@@ -51,7 +50,7 @@ class EKSClusterStack extends cdk.Stack {
             )
         });
 
-        const graphqlAPIResource = new eks.KubernetesResource(this, "graphql-api-resource", {
+        const graphqlAPIResource = new eks.KubernetesManifest(this, "graphql-api-resource", {
             cluster,
             manifest: getKubernetesTemplates(
                 graphqlAPIRepo, //repo

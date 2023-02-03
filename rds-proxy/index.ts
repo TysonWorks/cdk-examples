@@ -1,8 +1,8 @@
-import * as cdk from "@aws-cdk/core";
-import * as rds from "@aws-cdk/aws-rds";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as iam from "@aws-cdk/aws-iam";
-import * as lambda from "@aws-cdk/aws-lambda";
+import * as cdk from "aws-cdk-lib";
+import * as rds from "aws-cdk-lib/aws-rds";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as iam from "aws-cdk-lib/aws-iam";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import { config } from "dotenv";
 config();
 
@@ -44,16 +44,16 @@ class RdsProxyStack extends cdk.Stack {
             defaultDatabaseName: DB_NAME,
             engine: rds.DatabaseClusterEngine.AURORA_MYSQL,
             port: +DB_PORT,
-            masterUser: {
-                username: DB_USER
-            },
-            instanceProps: { 
+            instanceProps: {
                 instanceType: ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.SMALL),
                 vpc,
                 securityGroups: [dbClusterSg]
             },
             removalPolicy: cdk.RemovalPolicy.DESTROY,
-            instanceIdentifierBase: "dbcluster"
+            instanceIdentifierBase: "dbcluster",
+            credentials: {
+                username: DB_USER
+            }
         });
         
         const dbProxy = new rds.DatabaseProxy(this, "db-proxy", {
@@ -105,7 +105,7 @@ class RdsProxyStack extends cdk.Stack {
                 handler: "handler.handler",
                 timeout: cdk.Duration.seconds(60),
                 role: lambdaRole,
-                securityGroup: lambdaSg,
+                securityGroups: [lambdaSg],
                 environment: {
                     DB_PORT,
                     DB_USER,

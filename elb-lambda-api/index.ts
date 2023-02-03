@@ -1,14 +1,15 @@
-import * as cdk from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
-import * as elbv2Targets from "@aws-cdk/aws-elasticloadbalancingv2-targets";
-import * as ec2 from "@aws-cdk/aws-ec2";
+import * as cdk from 'aws-cdk-lib';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import * as elbv2Targets from "aws-cdk-lib/aws-elasticloadbalancingv2-targets";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { readFileSync } from 'fs';
+import { Construct } from "constructs";
 import { config } from "dotenv";
 config();
 
 class ElbLambdaStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const vpc = new ec2.Vpc(this, 'VPC', { maxAzs: 2 });

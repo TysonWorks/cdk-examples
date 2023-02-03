@@ -1,10 +1,11 @@
-import * as cdk from "@aws-cdk/core";
-import * as ec2 from "@aws-cdk/aws-ec2";
+import * as cdk from "aws-cdk-lib";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { Construct } from "constructs";
 import { config } from "dotenv";
 config();
 
 class TransitGatewayStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
         const vpc1 = new ec2.Vpc(this, "vpc1", {
@@ -59,7 +60,7 @@ class TransitGatewayStack extends cdk.Stack {
             instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.NANO),
             machineImage: new ec2.AmazonLinuxImage({ generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2 }),
             vpcSubnets: {
-                subnetType: ec2.SubnetType.PRIVATE,
+                subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
             },
             securityGroup: sg1,
             userData
@@ -82,7 +83,7 @@ class TransitGatewayStack extends cdk.Stack {
             instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.NANO),
             machineImage: new ec2.AmazonLinuxImage({ generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2 }),
             vpcSubnets: {
-                subnetType: ec2.SubnetType.PRIVATE,
+                subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
             },
             securityGroup: sg3,
             userData

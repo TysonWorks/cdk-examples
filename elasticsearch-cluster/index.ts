@@ -1,32 +1,33 @@
-import * as cdk from "@aws-cdk/core";
-import * as es from "@aws-cdk/aws-elasticsearch";
-import * as ec2 from "@aws-cdk/aws-ec2";
+import * as cdk from "aws-cdk-lib";
+import * as es from "aws-cdk-lib/aws-elasticsearch";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { Construct } from "constructs";
 import { config } from "dotenv";
 config();
 
 const DOMAIN_NAME = "es-domain";
 
 export class ElasticSearchStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
         // Comment out for enabling VPC
-        // const vpc = new ec2.Vpc(this, "vpc", {
-        //     maxAzs: 3
-        // });
-        // const sg = new ec2.SecurityGroup(this, "sg", {
-        //     vpc,
-        //     allowAllOutbound: true,
-        //     securityGroupName: "es-sg"
-        // });
-        // sg.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(80), "Allow access to port 80");
-        // sg.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(443), "Allow access to port 443");
+        const vpc = new ec2.Vpc(this, "vpc", {
+            maxAzs: 3
+        });
+        const sg = new ec2.SecurityGroup(this, "sg", {
+            vpc,
+            allowAllOutbound: true,
+            securityGroupName: "es-sg"
+        });
+        sg.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(80), "Allow access to port 80");
+        sg.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(443), "Allow access to port 443");
 
         const domain = new es.CfnDomain(this, "es-domain", {
-            // vpcOptions: {
-            //     subnetIds: vpc.publicSubnets.slice(0,2).map(subnet=>subnet.subnetId),
-            //     securityGroupIds: [sg.securityGroupId]
-            // },
+            vpcOptions: {
+                subnetIds: vpc.publicSubnets.slice(0,2).map(subnet=>subnet.subnetId),
+                securityGroupIds: [sg.securityGroupId]
+            },
             domainName: DOMAIN_NAME,
             elasticsearchVersion: "6.8",
             elasticsearchClusterConfig: {

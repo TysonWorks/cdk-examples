@@ -1,12 +1,13 @@
-import * as cdk from "@aws-cdk/core";
-import * as ec2 from "@aws-cdk/aws-ec2";
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as ecs_patterns from '@aws-cdk/aws-ecs-patterns';
+import * as cdk from "aws-cdk-lib/core";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ecs_patterns from 'aws-cdk-lib/aws-ecs-patterns';
+import { Construct } from "constructs";
 import { config } from "dotenv";
 config();
 
 class EcsGoAPIStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps){
+    constructor(scope: Construct, id: string, props?: cdk.StackProps){
         super(scope, id, props);
 
         const vpc = new ec2.Vpc(this, 'vpc', { maxAzs: 2 });

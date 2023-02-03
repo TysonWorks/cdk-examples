@@ -1,6 +1,7 @@
-import * as cdk from "@aws-cdk/core";
-import * as ec2 from "@aws-cdk/aws-ec2";
+import * as cdk from "aws-cdk-lib";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { getLatestJenkinsAMI } from "./lib";
+import { Construct } from "constructs";
 import { config } from "dotenv";
 config();
 
@@ -10,7 +11,7 @@ interface EC2JenkinsStackProps {
 }
 
 class EC2JenkinsStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props: EC2JenkinsStackProps) {
+    constructor(scope: Construct, id: string, props: EC2JenkinsStackProps) {
         super(scope, id, props);
 
         // Create a new VPC
